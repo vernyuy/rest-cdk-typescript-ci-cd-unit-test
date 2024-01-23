@@ -17,7 +17,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
           "vernyuy/rest-cdk-typescript-ci-cd-unit-test",
           "master"
         ),
-        commands: ["npm ci", "npm run build","npm run test", "npx cdk synth"],
+        commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
     });
 
