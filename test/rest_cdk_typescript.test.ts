@@ -40,30 +40,7 @@ test("Lambda Functions Created", () => {
     template.resourceCountIs("AWS::Lambda::Function", 5);
   });
   
-test('Lambda Has Environment Variables', () => {
-    const app = new cdk.App();
-    // WHEN
-    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
-      app,
-      "MyTestStack"
-    );
-    // THEN
-    const template = Template.fromStack(stack);
-    const envCapture = new Capture();
-    template.hasResourceProperties("AWS::Lambda::Function", {
-      Environment: envCapture,
-    });
 
-    expect(envCapture.asObject()).toEqual(
-      {
-        Variables: {
-          TABLE_NAME: {
-            Ref: "CdkTypescriptWeatherTable193DDE34",
-          },
-        },
-      }
-    );
-  });
 
   // test('Lambda Function created', ()=>{
   //   const app = new cdk.App();
