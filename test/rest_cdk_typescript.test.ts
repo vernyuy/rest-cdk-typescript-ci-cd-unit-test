@@ -1,74 +1,78 @@
-// import * as cdk from 'aws-cdk-lib';
-// import { Template, Capture } from 'aws-cdk-lib/assertions';
-// import * as RestCdkTypescript from '../lib/rest_cdk_typescript-stack';
-// import * as lambda from 'aws-cdk-lib/aws-lambda';
-// // example test. To run these tests, uncomment this file along with the
-// // example resource in lib/rest_cdk_typescript-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new RestCdkTypescript.RestCdkTypescriptStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+import * as RestCdkTypescript from "../lib/rest_cdk_typescript-stack";
+import * as cdk from "aws-cdk-lib";
+import { Template, Capture } from "aws-cdk-lib/assertions";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
+test("DynamoDB Table Created", () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+    app,
+    "MyTestStack"
+  );
+  // THEN
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::DynamoDB::Table", 1);
 });
 
-
-
-
-// test('DynamoDB Table Created', () => {
-//   const stack = new cdk.Stack();
-//   // WHEN
-//   new RestCdkTypescript(stack, 'MyTestConstruct', {
-//     downstream:  new lambda.Function(stack, 'TestFunction', {
-//       runtime: lambda.Runtime.NODEJS_14_X,
-//       handler: 'hitcounter.handler',
-//       code: lambda.Code.fromAsset('lib/lambda')
-//     }),
-//     readCapacity: 10,
-//   });
-//   // THEN
-
-//   const template = Template.fromStack(stack);
-//   template.resourceCountIs("AWS::DynamoDB::Table", 1);
-// });
-
-
-// test('Lambda Has Environment Variables', () => {
-//     const stack = new cdk.Stack();
-//     // WHEN
-//     new HitCounter(stack, 'MyTestConstruct', {
-//       downstream:  new lambda.Function(stack, 'TestFunction', {
-//         runtime: lambda.Runtime.NODEJS_14_X,
-//         handler: 'hello.handler',
-//         code: lambda.Code.fromAsset('lib/lambda')
-//       }),
-//       readCapacity: 5
-//     });
-//     // THEN
-//     const template = Template.fromStack(stack);
-//     const envCapture = new Capture();
-//     template.hasResourceProperties("AWS::Lambda::Function", {
-//       Environment: envCapture,
-//     });
+test("Api Gateway Created", () => {
+    const app = new cdk.App();
+    // WHEN
+    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+      app,
+      "MyTestStack"
+    );
+    // THEN
+    const template = Template.fromStack(stack);
+    template.resourceCountIs("AWS::ApiGateway::RestApi", 1);
+  });
   
-//     expect(envCapture.asObject()).toEqual(
-//       {
-//         Variables: {
-//           DOWNSTREAM_FUNCTION_NAME: {
-//             Ref: "TestFunction22AD90FC",
-//           },
-//           HITS_TABLE_NAME: {
-//             Ref: "MyTestConstructHits24A357F0",
-//           },
-//         },
-//       }
-//     );
-//   });
 
+test("Lambda Functions Created", () => {
+    const app = new cdk.App();
+    // WHEN
+    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+      app,
+      "MyTestStack"
+    );
+    // THEN
+    const template = Template.fromStack(stack);
+    template.resourceCountIs("AWS::Lambda::Function", 5);
+  });
+  
+test('Lambda Has Environment Variables', () => {
+    const app = new cdk.App();
+    // WHEN
+    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+      app,
+      "MyTestStack"
+    );
+    // THEN
+    const template = Template.fromStack(stack);
+    const envCapture = new Capture();
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      Environment: envCapture,
+    });
+
+    expect(envCapture.asObject()).toEqual(
+      {
+        Variables: {
+          TABLE_NAME: {
+            Ref: "CdkTypescriptWeatherTable193DDE34",
+          },
+        },
+      }
+    );
+  });
+
+  // test('Lambda Function created', ()=>{
+  //   const app = new cdk.App();
+
+  //   const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  //     app,
+  //     "LambdaFunction"
+  //   )
+  // })
 
 //   // test('DynamoDB Table Created With Encryption', () => {
 //   //   const stack = new cdk.Stack();
@@ -90,10 +94,9 @@ test('SQS Queue Created', () => {
 //   //   });
 //   // });
 
-
 //   test('read capacity can be configured', () => {
 //     const stack = new cdk.Stack();
-  
+
 //     expect(() => {
 //       new HitCounter(stack, 'MyTestConstruct', {
 //         downstream:  new lambda.Function(stack, 'TestFunction', {
