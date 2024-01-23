@@ -4,17 +4,17 @@
 // import * as lambda from 'aws-cdk-lib/aws-lambda';
 // // example test. To run these tests, uncomment this file along with the
 // // example resource in lib/rest_cdk_typescript-stack.ts
-// test('SQS Queue Created', () => {
-// //   const app = new cdk.App();
-// //     // WHEN
-// //   const stack = new RestCdkTypescript.RestCdkTypescriptStack(app, 'MyTestStack');
-// //     // THEN
-// //   const template = Template.fromStack(stack);
+test('SQS Queue Created', () => {
+//   const app = new cdk.App();
+//     // WHEN
+//   const stack = new RestCdkTypescript.RestCdkTypescriptStack(app, 'MyTestStack');
+//     // THEN
+//   const template = Template.fromStack(stack);
 
-// //   template.hasResourceProperties('AWS::SQS::Queue', {
-// //     VisibilityTimeout: 300
-// //   });
-// });
+//   template.hasResourceProperties('AWS::SQS::Queue', {
+//     VisibilityTimeout: 300
+//   });
+});
 
 
 
