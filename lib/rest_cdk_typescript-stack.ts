@@ -14,7 +14,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     new CodePipeline(this, "Pipeline", {
       synth: new ShellStep("synth", {
         input: CodePipelineSource.gitHub(
-          "vernyuy/unit-test-with-cdk-typescript",
+          "vernyuy/rest-cdk-typescript-ci-cd-unit-test",
           "master"
         ),
         commands: ["npm ci", "npm run build","npm run test", "npx cdk synth"],
