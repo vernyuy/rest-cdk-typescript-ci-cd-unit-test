@@ -2,8 +2,8 @@ import * as RestCdkTypescript from "../lib/rest_cdk_typescript-stack";
 import * as cdk from "aws-cdk-lib";
 import { Template, Capture } from "aws-cdk-lib/assertions";
 
-import * as lambda from "aws-cdk-lib/aws-lambda";
-import {IntegTest, ExpectedResult} from '@aws-cdk/integ-tests-alpha'
+// import * as lambda from "aws-cdk-lib/aws-lambda";
+// import {IntegTest, ExpectedResult} from '@aws-cdk/integ-tests-alpha'
 
 test("DynamoDB Table Created", () => {
   const app = new cdk.App();
