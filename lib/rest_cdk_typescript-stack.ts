@@ -27,12 +27,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-    new cdk.Tag("RestCdkTypescript", "weatherApiTable", {
-      includeResourceTypes: [
-        "AWS::DynamoDB::Table",
-      ]
-    })
-
+    cdk.Tags.of(table).add('RestCdkTypescript', 'Dev');
     // Lambda resource to create weather item in dynamodb
     const createWeatherLambda = new lambda.Function(
       this,
