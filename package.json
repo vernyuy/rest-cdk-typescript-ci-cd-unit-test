@@ -12,8 +12,6 @@
     "integ-test": "integ-runner --directory ./test --parallel-regions us-east-1 --update-on-failed"
   },
   "devDependencies": {
-    "@aws-cdk/integ-runner": "^2.88.0-alpha.0",
-    "@aws-cdk/integ-tests-alpha": "^2.88.0-alpha.0",
     "@types/aws-lambda": "^8.10.130",
     "@types/jest": "^29.5.8",
     "@types/node": "20.9.1",

@@ -1,1 +1,0 @@
-import { IntegTest, ExpectedResult } from '@aws-cdk/integ-tests-alpha'
