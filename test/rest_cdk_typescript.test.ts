@@ -1,7 +1,9 @@
 import * as RestCdkTypescript from "../lib/rest_cdk_typescript-stack";
 import * as cdk from "aws-cdk-lib";
 import { Template, Capture } from "aws-cdk-lib/assertions";
+
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import {IntegTest, ExpectedResult} from '@aws-cdk/integ-tests-alpha'
 
 test("DynamoDB Table Created", () => {
   const app = new cdk.App();
@@ -12,7 +14,40 @@ test("DynamoDB Table Created", () => {
   );
   // THEN
   const template = Template.fromStack(stack);
-  template.resourceCountIs("AWS::DynamoDB::Table", 1);
+  // template.resourceCountIs("AWS::DynamoDB::Table", 1);
+  template.hasResource("AWS::DynamoDB::Table", {
+    "Properties":{
+      "TableName": "weatherApiTable"
+    }
+  });
+});
+
+test("ApiGatway RestApi Created", () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+    app,
+    "MyTestStack"
+  );
+  // THEN
+  const template = Template.fromStack(stack);
+  template.hasResource("AWS::ApiGateway::RestApi", {
+    "Properties": {
+      "Name": "Weather Rest Api"
+    }
+  })
+});
+
+test("5 Lambda Functions Created", () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+    app,
+    "MyTestStack"
+  );
+  // THEN
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Lambda::Function", 5);
 });
 
 test("Api Gateway Created", () => {
@@ -24,21 +59,15 @@ test("Api Gateway Created", () => {
     );
     // THEN
     const template = Template.fromStack(stack);
-    template.resourceCountIs("AWS::ApiGateway::RestApi", 1);
+    template.hasResource("AWS::ApiGateway::RestApi", {
+      "Properties": {
+        "Name": "Weather Rest Api"
+      }
+    })
   });
   
 
-test("Lambda Functions Created", () => {
-    const app = new cdk.App();
-    // WHEN
-    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
-      app,
-      "MyTestStack"
-    );
-    // THEN
-    const template = Template.fromStack(stack);
-    template.resourceCountIs("AWS::Lambda::Function", 5);
-  });
+
   
 test('Lambda Has Environment Variables', () => {
     const app = new cdk.App();
@@ -65,14 +94,34 @@ test('Lambda Has Environment Variables', () => {
     );
   });
 
-  // test('Lambda Function created', ()=>{
-  //   const app = new cdk.App();
 
-  //   const stack = new RestCdkTypescript.RestCdkTypescriptStack(
-  //     app,
-  //     "LambdaFunction"
-  //   )
-  // })
+  test('Lambda Function typescript created', ()=>{
+    const app = new cdk.App();
+    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+      app,
+      "LambdaFunction"
+    );
+    const template = Template.fromStack(stack);
+    template.hasResource("AWS::Lambda::Function", {
+      "Properties": {
+        "FunctionName": "cdk-typescript-create"
+      }
+    })
+  })
+
+  test('Lambda Function typescript delete', ()=>{
+    const app = new cdk.App();
+    const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+      app,
+      "LambdaFunction"
+    );
+    const template = Template.fromStack(stack);
+    template.hasResource("AWS::Lambda::Function", {
+      "Properties": {
+        "FunctionName": "cdk-typescript-delete"
+      } 
+    })
+  })
 
 //   // test('DynamoDB Table Created With Encryption', () => {
 //   //   const stack = new cdk.Stack();

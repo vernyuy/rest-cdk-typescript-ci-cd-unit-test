@@ -3,6 +3,7 @@ import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as apigw from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
+import * as tag from "aws-cdk-lib/aws-resourcegroups";
 import path = require("path");
 import { CodePipeline, ShellStep, CodePipelineSource } from "aws-cdk-lib/pipelines";
 
@@ -26,6 +27,11 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
+    new cdk.Tag("RestCdkTypescript", "weatherApiTable", {
+      includeResourceTypes: [
+        "AWS::DynamoDB::Table",
+      ]
+    })
 
     // Lambda resource to create weather item in dynamodb
     const createWeatherLambda = new lambda.Function(
