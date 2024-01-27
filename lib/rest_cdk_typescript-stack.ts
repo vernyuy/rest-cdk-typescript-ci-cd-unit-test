@@ -3,16 +3,15 @@ import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as apigw from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
-import * as tag from "aws-cdk-lib/aws-resourcegroups";
-import path = require("path");
-import { CodePipeline, ShellStep, CodePipelineSource } from "aws-cdk-lib/pipelines";
+import {RestApiPipelineStage} from './pipeline-stage';
 
+import { CodePipeline, ShellStep, CodePipelineSource } from "aws-cdk-lib/pipelines";
 
 export class RestCdkTypescriptStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new CodePipeline(this, "Pipeline", {
+    const pipeline = new CodePipeline(this, "Pipeline", {
       synth: new ShellStep("synth", {
         input: CodePipelineSource.gitHub(
           "vernyuy/rest-cdk-typescript-ci-cd-unit-test",
@@ -22,14 +21,18 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       }),
     });
 
-    const table = new dynamodb.Table(this, "CdkTypescriptWeatherTable", {
+
+    const deploy = new RestApiPipelineStage(this, 'Deploy');
+    pipeline.addStage(deploy);
+
+    const table: dynamodb.Table = new dynamodb.Table(this, "CdkTypescriptWeatherTable", {
       tableName: "weatherApiTable",
       partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
     cdk.Tags.of(table).add('RestCdkTypescript', 'Dev');
     // Lambda resource to create weather item in dynamodb
-    const createWeatherLambda = new lambda.Function(
+    const createWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "CreateWeatherLambdaFunction",
       {
@@ -44,7 +47,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     );
 
     // Api gateway resource
-    const weather_api = new apigw.RestApi(this, "weather_rest_api", {
+    const weather_api: apigw.RestApi = new apigw.RestApi(this, "weather_rest_api", {
       restApiName: "Weather Rest Api",
       description: "This service serves weather data.",
     } as apigw.RestApiProps);
@@ -58,7 +61,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       .addMethod("POST", new apigw.LambdaIntegration(createWeatherLambda));
 
     // Defining a lambda resource to read data from dynamodb table
-    const getWeatherLambda = new lambda.Function(
+    const getWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "getWeatherLambdaFunction",
       {
@@ -81,7 +84,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     weather.addMethod("GET", new apigw.LambdaIntegration(getWeatherLambda));
 
     // Defining a lambda resource to list all data from dynamodb table
-    const listWeatherLambda = new lambda.Function(
+    const listWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "listWeatherLambdaFunction",
       {
@@ -102,7 +105,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     weathers.addMethod("GET", new apigw.LambdaIntegration(listWeatherLambda));
 
     // Defining a lambda resource to delete data from dynamodb table
-    const deleteWeatherLambda = new lambda.Function(
+    const deleteWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "deleteWeatherLambdaFunction",
       {
@@ -126,7 +129,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     );
 
     // Defining a lambda resource to update data in dynamodb table
-    const updateWeatherLambda = new lambda.Function(
+    const updateWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "updateWeatherLambdaFunction",
       {
