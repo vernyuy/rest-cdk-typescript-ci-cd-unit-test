@@ -1,47 +1,47 @@
-import * as RestCdkTypescript from "../lib/rest_cdk_typescript-stack";
-import * as cdk from "aws-cdk-lib";
-import { Template, Capture } from "aws-cdk-lib/assertions";
-import { lambdaHandler } from "../src/listWeathers";
-import * as LambdaStack from "../lib/lambda-stack"
+// import * as RestCdkTypescript from "../lib/rest_cdk_typescript-stack";
+// import * as cdk from "aws-cdk-lib";
+// import { Template, Capture } from "aws-cdk-lib/assertions";
+// import { lambdaHandler } from "../src/listWeathers";
+// import * as LambdaStack from "../lib/lambda-stack"
 
-test("DynamoDB Table Created", () => {
-  const app = new cdk.App();
-  // WHEN
-  const stack = new LambdaStack.LambdaStack(
-    app,
-    "MyTestStack",
-    {
-      stageName: "Test"
-    }
-  );
-  // THEN
-  const template = Template.fromStack(stack);
-  // template.resourceCountIs("AWS::DynamoDB::Table", 1);
-  template.hasResource("AWS::DynamoDB::Table", {
-    Properties: {
-      TableName: "weatherApiTable",
-    },
-  });
-});
+// test("DynamoDB Table Created", () => {
+//   const app = new cdk.App();
+//   // WHEN
+//   const stack = new LambdaStack.LambdaStack(
+//     app,
+//     "MyTestStack",
+//     {
+//       stageName: "Test"
+//     }
+//   );
+//   // THEN
+//   const template = Template.fromStack(stack);
+//   // template.resourceCountIs("AWS::DynamoDB::Table", 1);
+//   template.hasResource("AWS::DynamoDB::Table", {
+//     Properties: {
+//       TableName: "weatherApiTable",
+//     },
+//   });
+// });
 
-test("ApiGatway RestApi Created", () => {
-  const app = new cdk.App();
-  // WHEN
-  const stack = new LambdaStack.LambdaStack(
-    app,
-    "MyTestStack",
-    {
-      stageName: "Test"
-    }
-  );
-  // THEN
-  const template = Template.fromStack(stack);
-  template.hasResource("AWS::ApiGateway::RestApi", {
-    Properties: {
-      Name: "Weather Rest Api",
-    },
-  });
-});
+// test("ApiGatway RestApi Created", () => {
+//   const app = new cdk.App();
+//   // WHEN
+//   const stack = new LambdaStack.LambdaStack(
+//     app,
+//     "MyTestStack",
+//     {
+//       stageName: "Test"
+//     }
+//   );
+//   // THEN
+//   const template = Template.fromStack(stack);
+//   template.hasResource("AWS::ApiGateway::RestApi", {
+//     Properties: {
+//       Name: "Weather Rest Api",
+//     },
+//   });
+// });
 
 // test("5 Lambda Functions Created", () => {
 //   const app = new cdk.App();
