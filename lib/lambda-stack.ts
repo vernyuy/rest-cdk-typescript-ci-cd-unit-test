@@ -15,7 +15,7 @@ export class LambdaStack extends Stack {
     
     const table: dynamodb.Table = new dynamodb.Table(
       this,
-      "CdkTypescriptWeatherTable",
+      `${props.stageName}CdkTypescriptWeatherTable`,
       {
         tableName: `${props.stageName}weatherApiTable`,
         partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
