@@ -1,11 +1,26 @@
-import { RestCdkTypescriptStack } from './rest_cdk_typescript-stack'
+import { LambdaStack } from './lambda-stack';
 import { Stage, StageProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-export class RestApiPipelineStage extends Stage {
-    constructor(scope: Construct, id: string, props?: StageProps) {
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as apigw from "aws-cdk-lib/aws-apigateway";
+
+interface PipelineStageProps extends StageProps {
+    table: dynamodb.ITable,
+    weatherApi: apigw.IRestApi
+}
+
+export class PipelineStage extends Stage {
+    constructor(scope: Construct, id: string, props: PipelineStageProps) {
         super(scope, id, props);
 
-        new RestCdkTypescriptStack(this, 'WebService');
+        const {table, weatherApi} = props
+
+        new LambdaStack(this, "lambdaStack", {
+            stageName: "Test",
+            table: table,
+            weatherApi: weatherApi
+        })
+
     }
 }
