@@ -13,26 +13,25 @@ export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
     const table: dynamodb.Table = new dynamodb.Table(
-        this,
-        "CdkTypescriptWeatherTable",
-        {
-          tableName: "weatherApiTable",
-          partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        }
-      );
-      cdk.Tags.of(table).add("RestCdkTypescript", "Dev");
-  
-      // Api gateway resource
-      const weatherApi: apigw.RestApi = new apigw.RestApi(
-        this,
-        "weather_rest_api",
-        {
-          restApiName: "Weather Rest Api",
-          description: "This service serves weather data.",
-        } as apigw.RestApiProps
-      );
-  
+      this,
+      "CdkTypescriptWeatherTable",
+      {
+        tableName: "weatherApiTable",
+        partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      }
+    );
+    cdk.Tags.of(table).add("RestCdkTypescript", "Test");
+
+    // Api gateway resource
+    const weatherApi: apigw.RestApi = new apigw.RestApi(
+      this,
+      "weather_rest_api",
+      {
+        restApiName: "Weather Rest Api",
+        description: "This service serves weather data.",
+      } as apigw.RestApiProps
+    );
 
     // const { stageName, table, weatherApi } = props;
     // new RestCdkTypescriptStack(this, 'W');
@@ -105,7 +104,6 @@ export class LambdaStack extends Stack {
         environment: {
           TABLE_NAME: table.tableName,
           STAGE_NAME: props.stageName,
-          
         },
       }
     );
