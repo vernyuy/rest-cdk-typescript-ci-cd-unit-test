@@ -35,11 +35,11 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       })
     );
 
-    // const prodStage = pipeline.addStage(
-    //   new PipelineStage(this, "PipelineProdStage", {
-    //     stageName: "prod",
-    //   })
-    // );
+    const prodStage = pipeline.addStage(
+      new PipelineStage(this, "PipelineProdStage", {
+        stageName: "prod",
+      })
+    );
 
     /***********************************************************************
      *    Authomate unit test within the stage
