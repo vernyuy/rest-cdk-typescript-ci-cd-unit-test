@@ -1,6 +1,6 @@
 import * as cdk from "aws-cdk-lib";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as apigw from "aws-cdk-lib/aws-apigateway";
+// import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+// import * as apigw from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
 import { PipelineStage } from "./pipeline-stage";
 
@@ -8,6 +8,7 @@ import {
   CodePipeline,
   ShellStep,
   CodePipelineSource,
+  CodeBuildStep,
 } from "aws-cdk-lib/pipelines";
 
 export class RestCdkTypescriptStack extends cdk.Stack {
@@ -50,32 +51,19 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     // });
     // )
 
-    const table: dynamodb.Table = new dynamodb.Table(
-      this,
-      "CdkTypescriptWeatherTable",
-      {
-        tableName: "weatherApiTable",
-        partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }
-    );
-    cdk.Tags.of(table).add("RestCdkTypescript", "Dev");
-
-    // Api gateway resource
-    const weatherApi: apigw.RestApi = new apigw.RestApi(
-      this,
-      "weather_rest_api",
-      {
-        restApiName: "Weather Rest Api",
-        description: "This service serves weather data.",
-      } as apigw.RestApiProps
-    );
-
+    
     const testStage = pipeline.addStage(
       new PipelineStage(this, "PipelineTestStage", {
-        table: table,
-        weatherApi: weatherApi,
+        stageName: "test"
       })
     );
+
+    testStage.addPre(new CodeBuildStep("unit test", {
+      commands:[
+        'cd cdk.out',
+        'npm ci',
+        'npm run test'
+      ]
+    }))
   }
 }

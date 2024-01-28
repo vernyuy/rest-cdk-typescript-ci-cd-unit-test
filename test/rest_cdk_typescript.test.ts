@@ -1,13 +1,18 @@
 import * as RestCdkTypescript from "../lib/rest_cdk_typescript-stack";
 import * as cdk from "aws-cdk-lib";
 import { Template, Capture } from "aws-cdk-lib/assertions";
+import { lambdaHandler } from "../src/listWeathers";
+import * as LambdaStack from "../lib/lambda-stack"
 
 test("DynamoDB Table Created", () => {
   const app = new cdk.App();
   // WHEN
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "MyTestStack"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   // THEN
   const template = Template.fromStack(stack);
@@ -22,9 +27,12 @@ test("DynamoDB Table Created", () => {
 test("ApiGatway RestApi Created", () => {
   const app = new cdk.App();
   // WHEN
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "MyTestStack"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   // THEN
   const template = Template.fromStack(stack);
@@ -38,9 +46,12 @@ test("ApiGatway RestApi Created", () => {
 test("5 Lambda Functions Created", () => {
   const app = new cdk.App();
   // WHEN
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "MyTestStack"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   // THEN
   const template = Template.fromStack(stack);
@@ -50,9 +61,12 @@ test("5 Lambda Functions Created", () => {
 test("Api Gateway Created", () => {
   const app = new cdk.App();
   // WHEN
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "MyTestStack"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   // THEN
   const template = Template.fromStack(stack);
@@ -66,9 +80,12 @@ test("Api Gateway Created", () => {
 test("Lambda Has Environment Variables", () => {
   const app = new cdk.App();
   // WHEN
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "MyTestStack"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   // THEN
   const template = Template.fromStack(stack);
@@ -82,15 +99,19 @@ test("Lambda Has Environment Variables", () => {
       TABLE_NAME: {
         Ref: "CdkTypescriptWeatherTable193DDE34",
       },
+      STAGE_NAME: "Test"
     },
   });
 });
 
 test("Lambda Function typescript created", () => {
   const app = new cdk.App();
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "LambdaFunction"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   const template = Template.fromStack(stack);
   template.hasResource("AWS::Lambda::Function", {
@@ -102,9 +123,12 @@ test("Lambda Function typescript created", () => {
 
 test("Lambda Function typescript delete", () => {
   const app = new cdk.App();
-  const stack = new RestCdkTypescript.RestCdkTypescriptStack(
+  const stack = new LambdaStack.LambdaStack(
     app,
-    "LambdaFunction"
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
   );
   const template = Template.fromStack(stack);
   template.hasResource("AWS::Lambda::Function", {
@@ -113,3 +137,9 @@ test("Lambda Function typescript delete", () => {
     },
   });
 });
+
+
+// test("Lambda status", async ()=>{
+//   const result = await lambdaHandler();
+//   expect(result.statusCode).toBe(200)
+// })

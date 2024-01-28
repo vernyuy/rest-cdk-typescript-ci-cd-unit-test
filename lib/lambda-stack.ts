@@ -1,4 +1,5 @@
 import { Stack, StackProps } from "aws-cdk-lib";
+import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
@@ -6,15 +7,34 @@ import * as apigw from "aws-cdk-lib/aws-apigateway";
 
 interface LambdaStackProps extends StackProps {
   stageName: string;
-  table: dynamodb.ITable;
-  weatherApi: apigw.IRestApi;
 }
 
 export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
+    const table: dynamodb.Table = new dynamodb.Table(
+        this,
+        "CdkTypescriptWeatherTable",
+        {
+          tableName: "weatherApiTable",
+          partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        }
+      );
+      cdk.Tags.of(table).add("RestCdkTypescript", "Dev");
+  
+      // Api gateway resource
+      const weatherApi: apigw.RestApi = new apigw.RestApi(
+        this,
+        "weather_rest_api",
+        {
+          restApiName: "Weather Rest Api",
+          description: "This service serves weather data.",
+        } as apigw.RestApiProps
+      );
+  
 
-    const { stageName, table, weatherApi } = props;
+    // const { stageName, table, weatherApi } = props;
     // new RestCdkTypescriptStack(this, 'W');
 
     // Lambda resource to create weather item in dynamodb
@@ -28,7 +48,7 @@ export class LambdaStack extends Stack {
         code: lambda.Code.fromAsset("src"),
         environment: {
           TABLE_NAME: table.tableName,
-          STAGE_NAME: stageName,
+          STAGE_NAME: props.stageName,
         },
       }
     );
@@ -46,6 +66,7 @@ export class LambdaStack extends Stack {
         code: lambda.Code.fromAsset("src"),
         environment: {
           TABLE_NAME: table.tableName,
+          STAGE_NAME: props.stageName,
         },
       }
     );
@@ -64,6 +85,7 @@ export class LambdaStack extends Stack {
         code: lambda.Code.fromAsset("src"),
         environment: {
           TABLE_NAME: table.tableName,
+          STAGE_NAME: props.stageName,
         },
       }
     );
@@ -82,6 +104,8 @@ export class LambdaStack extends Stack {
         code: lambda.Code.fromAsset("src"),
         environment: {
           TABLE_NAME: table.tableName,
+          STAGE_NAME: props.stageName,
+          
         },
       }
     );
@@ -100,6 +124,7 @@ export class LambdaStack extends Stack {
         code: lambda.Code.fromAsset("src"),
         environment: {
           TABLE_NAME: table.tableName,
+          STAGE_NAME: props.stageName,
         },
       }
     );
