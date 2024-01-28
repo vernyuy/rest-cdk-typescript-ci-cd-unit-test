@@ -11,7 +11,7 @@ test("DynamoDB Table Created", () => {
     app,
     "MyTestStack",
     {
-      stageName: "Test"
+      stageName: "Dev"
     }
   );
   // THEN
@@ -19,7 +19,7 @@ test("DynamoDB Table Created", () => {
   // template.resourceCountIs("AWS::DynamoDB::Table", 1);
   template.hasResource("AWS::DynamoDB::Table", {
     Properties: {
-      TableName: "TestweatherApiTable",
+      TableName: "DevweatherApiTable",
     },
   });
 });
@@ -31,14 +31,14 @@ test("ApiGatway RestApi Created", () => {
     app,
     "MyTestStack",
     {
-      stageName: "Test"
+      stageName: "Dev"
     }
   );
   // THEN
   const template = Template.fromStack(stack);
   template.hasResource("AWS::ApiGateway::RestApi", {
     Properties: {
-      Name: "Test Weather Rest Api",
+      Name: "Dev Weather Rest Api",
     },
   });
 });
@@ -50,7 +50,7 @@ test("5 Lambda Functions Created", () => {
     app,
     "MyTestStack",
     {
-      stageName: "Test"
+      stageName: "Dev"
     }
   );
   // THEN
@@ -84,7 +84,7 @@ test("Lambda Has Environment Variables", () => {
     app,
     "MyTestStack",
     {
-      stageName: "Test"
+      stageName: "Dev"
     }
   );
   // THEN
@@ -97,9 +97,9 @@ test("Lambda Has Environment Variables", () => {
   expect(envCapture.asObject()).toEqual({
     Variables: {
       TABLE_NAME: {
-        Ref: "TestCdkTypescriptWeatherTableA8BF8E32",
+        Ref: "DevCdkTypescriptWeatherTableA8D40B83",
       },
-      STAGE_NAME: "Test"
+      STAGE_NAME: "Dev"
     },
   });
 });

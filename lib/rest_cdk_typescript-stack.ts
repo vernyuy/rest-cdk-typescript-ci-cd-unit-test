@@ -29,9 +29,9 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     /***********************************************************************
      *    Add test stage
      ***********************************************************************/
-    const testStage = pipeline.addStage(
-      new PipelineStage(this, "PipelineTestStage", {
-        stageName: "test",
+    const devStage = pipeline.addStage(
+      new PipelineStage(this, "PipelineDevStage", {
+        stageName: "dev",
       })
     );
 
@@ -44,12 +44,12 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     /***********************************************************************
      *    Authomate unit test within the stage
      ***********************************************************************/
-    testStage.addPre(
+    devStage.addPre(
       new CodeBuildStep("unit test", {
         commands: ["npm ci", "npm run test"],
       })
     );
 
-    testStage.addPost(new ManualApprovalStep('Manual aproval before production'))
+    devStage.addPost(new ManualApprovalStep('Manual aproval before production'))
   }
 }
