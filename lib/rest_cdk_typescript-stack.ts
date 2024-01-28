@@ -6,6 +6,7 @@ import {
   ShellStep,
   CodePipelineSource,
   CodeBuildStep,
+  ManualApprovalStep
 } from "aws-cdk-lib/pipelines";
 
 export class RestCdkTypescriptStack extends cdk.Stack {
@@ -48,5 +49,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
         commands: ["npm ci", "npm run test"],
       })
     );
+
+    testStage.addPost(new ManualApprovalStep('Manual aproval before production'))
   }
 }
