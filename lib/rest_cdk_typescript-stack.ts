@@ -60,7 +60,6 @@ export class RestCdkTypescriptStack extends cdk.Stack {
 
     testStage.addPre(new CodeBuildStep("unit test", {
       commands:[
-        'cd cdk.out',
         'npm ci',
         'npm run test'
       ]
