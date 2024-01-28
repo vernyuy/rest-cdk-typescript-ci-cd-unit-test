@@ -19,7 +19,7 @@ test("DynamoDB Table Created", () => {
   // template.resourceCountIs("AWS::DynamoDB::Table", 1);
   template.hasResource("AWS::DynamoDB::Table", {
     Properties: {
-      TableName: "TestWeatherApiTable",
+      TableName: "TestWeatherTable",
     },
   });
 });

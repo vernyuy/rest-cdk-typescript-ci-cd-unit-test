@@ -17,7 +17,7 @@ export class LambdaStack extends Stack {
       this,
       `${props.stageName}CdkTypescriptWeatherTable`,
       {
-        tableName: `${props.stageName}WeatherApiTable`,
+        tableName: `${props.stageName}WeatherTable`,
         partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       }
