@@ -19,7 +19,7 @@ test("DynamoDB Table Created", () => {
   // template.resourceCountIs("AWS::DynamoDB::Table", 1);
   template.hasResource("AWS::DynamoDB::Table", {
     Properties: {
-      TableName: "weatherApiTable",
+      TableName: "TestWeatherApiTable",
     },
   });
 });
@@ -38,7 +38,7 @@ test("ApiGatway RestApi Created", () => {
   const template = Template.fromStack(stack);
   template.hasResource("AWS::ApiGateway::RestApi", {
     Properties: {
-      Name: "Weather Rest Api",
+      Name: "Test Weather Rest Api",
     },
   });
 });
@@ -58,24 +58,24 @@ test("5 Lambda Functions Created", () => {
   template.resourceCountIs("AWS::Lambda::Function", 5);
 });
 
-test("Api Gateway Created", () => {
-  const app = new cdk.App();
-  // WHEN
-  const stack = new LambdaStack.LambdaStack(
-    app,
-    "MyTestStack",
-    {
-      stageName: "Test"
-    }
-  );
-  // THEN
-  const template = Template.fromStack(stack);
-  template.hasResource("AWS::ApiGateway::RestApi", {
-    Properties: {
-      Name: "Weather Rest Api",
-    },
-  });
-});
+// test("Api Gateway Created", () => {
+//   const app = new cdk.App();
+//   // WHEN
+//   const stack = new LambdaStack.LambdaStack(
+//     app,
+//     "MyTestStack",
+//     {
+//       stageName: "Test"
+//     }
+//   );
+//   // THEN
+//   const template = Template.fromStack(stack);
+//   template.hasResource("AWS::ApiGateway::RestApi", {
+//     Properties: {
+//       Name: "Weather Rest Api",
+//     },
+//   });
+// });
 
 test("Lambda Has Environment Variables", () => {
   const app = new cdk.App();
@@ -116,7 +116,7 @@ test("Lambda Function typescript created", () => {
   const template = Template.fromStack(stack);
   template.hasResource("AWS::Lambda::Function", {
     Properties: {
-      FunctionName: "cdk-typescript-create",
+      FunctionName: "Test-cdk-typescript-create",
     },
   });
 });
@@ -133,7 +133,7 @@ test("Lambda Function typescript delete", () => {
   const template = Template.fromStack(stack);
   template.hasResource("AWS::Lambda::Function", {
     Properties: {
-      FunctionName: "cdk-typescript-delete",
+      FunctionName: "Test-cdk-typescript-delete",
     },
   });
 });

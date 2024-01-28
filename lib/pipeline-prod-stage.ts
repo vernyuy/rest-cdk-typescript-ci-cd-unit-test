@@ -10,7 +10,7 @@ export class PipelineStage extends Stage {
      *    Instantiate the lambda stack
      ***********************************************************************/
     new LambdaStack(this, "lambdaStack", {
-      stageName: props?.stageName as string,
+      stageName: "Prod",
     });
   }
 }
