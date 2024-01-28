@@ -38,22 +38,22 @@ export class LambdaStack extends Stack {
     // new RestCdkTypescriptStack(this, 'W');
 
     // Lambda resource to create weather item in dynamodb
-    // const createWeatherLambda: lambda.Function = new lambda.Function(
-    //   this,
-    //   "CreateWeatherLambdaFunction",
-    //   {
-    //     functionName: "cdk-typescript-create",
-    //     runtime: lambda.Runtime.NODEJS_14_X,
-    //     handler: "createWeather.lambdaHandler",
-    //     code: lambda.Code.fromAsset("src"),
-    //     environment: {
-    //       TABLE_NAME: table.tableName,
-    //       STAGE_NAME: props.stageName,
-    //     },
-    //   }
-    // );
+    const createWeatherLambda: lambda.Function = new lambda.Function(
+      this,
+      "CreateWeatherLambdaFunction",
+      {
+        functionName: "cdk-typescript-create",
+        runtime: lambda.Runtime.NODEJS_14_X,
+        handler: "createWeather.lambdaHandler",
+        code: lambda.Code.fromAsset("src"),
+        environment: {
+          TABLE_NAME: table.tableName,
+          STAGE_NAME: props.stageName,
+        },
+      }
+    );
     // // Grant createWeatherLambda the permission to write to dynamodb table
-    // table.grantReadWriteData(createWeatherLambda);
+    table.grantReadWriteData(createWeatherLambda);
 
     // // Defining a lambda resource to read data from dynamodb table
     // const getWeatherLambda: lambda.Function = new lambda.Function(
@@ -132,9 +132,9 @@ export class LambdaStack extends Stack {
     // table.grantReadWriteData(updateWeatherLambda);
 
     // // Defining an api route to create a weather item
-    // weatherApi.root
-    //   .addResource("create-weather")
-    //   .addMethod("POST", new apigw.LambdaIntegration(createWeatherLambda));
+    weatherApi.root
+      .addResource("create-weather")
+      .addMethod("POST", new apigw.LambdaIntegration(createWeatherLambda));
 
     // // Defining an api route to read a weather item
     // const weathers: apigw.Resource = weatherApi.root.addResource("weather");
