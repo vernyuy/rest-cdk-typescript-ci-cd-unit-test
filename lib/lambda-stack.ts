@@ -12,34 +12,35 @@ interface LambdaStackProps extends StackProps {
 export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
-
+    
     const table: dynamodb.Table = new dynamodb.Table(
       this,
-      `${props.stageName}CdkTypescriptWeatherTable`,
+      "CdkTypescriptWeatherTable",
       {
-        tableName: `${props.stageName}WeatherTable`,
+        tableName: "weatherApiTable",
         partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       }
     );
-    cdk.Tags.of(table).add("RestCdkTypescript", `${props.stageName}`);
+    cdk.Tags.of(table).add("RestCdkTypescript", "Test");
 
     // Api gateway resource
     const weatherApi: apigw.RestApi = new apigw.RestApi(
       this,
-      `${props.stageName}weather_rest_api`,
+      "weather_rest_api",
       {
-        restApiName: `${props.stageName} Weather Rest Api`,
+        restApiName: "Weather Rest Api",
         description: "This service serves weather data.",
       } as apigw.RestApiProps
     );
 
+
     // Lambda resource to create weather item in dynamodb
     const createWeatherLambda: lambda.Function = new lambda.Function(
       this,
-      `${props.stageName}CreateWeatherLambdaFunction`,
+      "CreateWeatherLambdaFunction",
       {
-        functionName: `${props.stageName}-cdk-typescript-create`,
+        functionName: "cdk-typescript-create",
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "createWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -55,9 +56,9 @@ export class LambdaStack extends Stack {
     // Defining a lambda resource to read data from dynamodb table
     const getWeatherLambda: lambda.Function = new lambda.Function(
       this,
-      `${props.stageName}getWeatherLambdaFunction`,
+      "getWeatherLambdaFunction",
       {
-        functionName: `${props.stageName}-cdk-typescript-get`,
+        functionName: "cdk-typescript-get",
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "getWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -74,9 +75,9 @@ export class LambdaStack extends Stack {
     // Defining a lambda resource to list all data from dynamodb table
     const listWeatherLambda: lambda.Function = new lambda.Function(
       this,
-      `${props.stageName}listWeatherLambdaFunction`,
+      "listWeatherLambdaFunction",
       {
-        functionName: `${props.stageName}-cdk-typescript-list`,
+        functionName: "cdk-typescript-list",
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "listWeathers.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -93,9 +94,9 @@ export class LambdaStack extends Stack {
     // Defining a lambda resource to delete data from dynamodb table
     const deleteWeatherLambda: lambda.Function = new lambda.Function(
       this,
-      `${props.stageName}deleteWeatherLambdaFunction`,
+      "deleteWeatherLambdaFunction",
       {
-        functionName: `${props.stageName}-cdk-typescript-delete`,
+        functionName: "cdk-typescript-delete",
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "deleteWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -112,9 +113,9 @@ export class LambdaStack extends Stack {
     // Defining a lambda resource to update data in dynamodb table
     const updateWeatherLambda: lambda.Function = new lambda.Function(
       this,
-      `${props.stageName}updateWeatherLambdaFunction`,
+      "updateWeatherLambdaFunction",
       {
-        functionName: `${props.stageName}-cdk-typescript-update`,
+        functionName: "cdk-typescript-update",
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "updateWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
