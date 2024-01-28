@@ -27,9 +27,9 @@ export class LambdaStack extends Stack {
     // Api gateway resource
     const weatherApi: apigw.RestApi = new apigw.RestApi(
       this,
-      "weather_rest_api",
+      `weather_rest_api`,
       {
-        restApiName: "Weather Rest Api",
+        restApiName: `${props.stageName} Weather Rest Api`,
         description: "This service serves weather data.",
       } as apigw.RestApiProps
     );
@@ -40,7 +40,7 @@ export class LambdaStack extends Stack {
       this,
       "CreateWeatherLambdaFunction",
       {
-        functionName: "cdk-typescript-create",
+        functionName: `${props.stageName}-cdk-typescript-create`,
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "createWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -58,7 +58,7 @@ export class LambdaStack extends Stack {
       this,
       "getWeatherLambdaFunction",
       {
-        functionName: "cdk-typescript-get",
+        functionName: `${props.stageName}-cdk-typescript-get`,
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "getWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -77,7 +77,7 @@ export class LambdaStack extends Stack {
       this,
       "listWeatherLambdaFunction",
       {
-        functionName: "cdk-typescript-list",
+        functionName: `${props.stageName}-cdk-typescript-list`,
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "listWeathers.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -96,7 +96,7 @@ export class LambdaStack extends Stack {
       this,
       "deleteWeatherLambdaFunction",
       {
-        functionName: "cdk-typescript-delete",
+        functionName: `${props.stageName}-cdk-typescript-delete`,
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "deleteWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),
@@ -115,7 +115,7 @@ export class LambdaStack extends Stack {
       this,
       "updateWeatherLambdaFunction",
       {
-        functionName: "cdk-typescript-update",
+        functionName: `${props.stageName}-cdk-typescript-update`,
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "updateWeather.lambdaHandler",
         code: lambda.Code.fromAsset("src"),

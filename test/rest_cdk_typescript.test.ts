@@ -24,39 +24,39 @@ test("DynamoDB Table Created", () => {
   });
 });
 
-// test("ApiGatway RestApi Created", () => {
-//   const app = new cdk.App();
-//   // WHEN
-//   const stack = new LambdaStack.LambdaStack(
-//     app,
-//     "MyTestStack",
-//     {
-//       stageName: "Test"
-//     }
-//   );
-//   // THEN
-//   const template = Template.fromStack(stack);
-//   template.hasResource("AWS::ApiGateway::RestApi", {
-//     Properties: {
-//       Name: "Weather Rest Api",
-//     },
-//   });
-// });
+test("ApiGatway RestApi Created", () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new LambdaStack.LambdaStack(
+    app,
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
+  );
+  // THEN
+  const template = Template.fromStack(stack);
+  template.hasResource("AWS::ApiGateway::RestApi", {
+    Properties: {
+      Name: "Test Weather Rest Api",
+    },
+  });
+});
 
-// test("5 Lambda Functions Created", () => {
-//   const app = new cdk.App();
-//   // WHEN
-//   const stack = new LambdaStack.LambdaStack(
-//     app,
-//     "MyTestStack",
-//     {
-//       stageName: "Test"
-//     }
-//   );
-//   // THEN
-//   const template = Template.fromStack(stack);
-//   template.resourceCountIs("AWS::Lambda::Function", 5);
-// });
+test("5 Lambda Functions Created", () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new LambdaStack.LambdaStack(
+    app,
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
+  );
+  // THEN
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Lambda::Function", 5);
+});
 
 // test("Api Gateway Created", () => {
 //   const app = new cdk.App();
@@ -77,32 +77,32 @@ test("DynamoDB Table Created", () => {
 //   });
 // });
 
-// test("Lambda Has Environment Variables", () => {
-//   const app = new cdk.App();
-//   // WHEN
-//   const stack = new LambdaStack.LambdaStack(
-//     app,
-//     "MyTestStack",
-//     {
-//       stageName: "Test"
-//     }
-//   );
-//   // THEN
-//   const template = Template.fromStack(stack);
-//   const envCapture = new Capture();
-//   template.hasResourceProperties("AWS::Lambda::Function", {
-//     Environment: envCapture,
-//   });
+test("Lambda Has Environment Variables", () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new LambdaStack.LambdaStack(
+    app,
+    "MyTestStack",
+    {
+      stageName: "Test"
+    }
+  );
+  // THEN
+  const template = Template.fromStack(stack);
+  const envCapture = new Capture();
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    Environment: envCapture,
+  });
 
-//   expect(envCapture.asObject()).toEqual({
-//     Variables: {
-//       TABLE_NAME: {
-//         Ref: "CdkTypescriptWeatherTable193DDE34",
-//       },
-//       STAGE_NAME: "Test"
-//     },
-//   });
-// });
+  expect(envCapture.asObject()).toEqual({
+    Variables: {
+      TABLE_NAME: {
+        Ref: "TestCdkTypescriptWeatherTableA8BF8E32",
+      },
+      STAGE_NAME: "Test"
+    },
+  });
+});
 
 // test("Lambda Function typescript created", () => {
 //   const app = new cdk.App();
