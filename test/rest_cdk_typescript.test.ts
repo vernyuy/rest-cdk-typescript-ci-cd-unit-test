@@ -97,7 +97,7 @@ test("Lambda Has Environment Variables", () => {
   expect(envCapture.asObject()).toEqual({
     Variables: {
       TABLE_NAME: {
-        Ref: "CdkTypescriptWeatherTable193DDE34",
+        Ref: "TestCdkTypescriptWeatherTableA8BF8E32",
       },
       STAGE_NAME: "Test"
     },
