@@ -12,7 +12,7 @@ interface LambdaStackProps extends StackProps {
 export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
-    
+
     const table: dynamodb.Table = new dynamodb.Table(
       this,
       "CdkTypescriptWeatherTable",
@@ -33,9 +33,6 @@ export class LambdaStack extends Stack {
         description: "This service serves weather data.",
       } as apigw.RestApiProps
     );
-
-    // const { stageName, table, weatherApi } = props;
-    // new RestCdkTypescriptStack(this, 'W');
 
     // Lambda resource to create weather item in dynamodb
     const createWeatherLambda: lambda.Function = new lambda.Function(

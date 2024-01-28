@@ -1,9 +1,6 @@
 import * as cdk from "aws-cdk-lib";
-// import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-// import * as apigw from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
 import { PipelineStage } from "./pipeline-stage";
-
 import {
   CodePipeline,
   ShellStep,
@@ -15,6 +12,9 @@ export class RestCdkTypescriptStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    /***********************************************************************
+     *    Create codepipeline for the project using github as code source.
+     ***********************************************************************/
     const pipeline = new CodePipeline(this, "Pipeline", {
       synth: new ShellStep("synth", {
         input: CodePipelineSource.gitHub(
@@ -25,44 +25,28 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       }),
     });
 
-    // const deployStage = pipeline.addStage();
-
-    // deployStage.addPost(
-    //   new CodeBuildStep('TestViewerEndpoint', {
-    //       projectName: 'TestViewerEndpoint',
-    //       // envFromCfnOutputs: {
-    //       //     ENDPOINT_URL: 'WE'
-    //       // },
-    //       commands: [
-    //           'curl -Ssf $ENDPOINT_URL'
-    //       ]
-    //   }),
-
-    // new CodeBuildStep("TestAPIGatewayEndpoint", {
-    //   projectName: "TestAPIGatewayEndpoint",
-    //   // envFromCfnOutputs: {
-    //   //     ENDPOINT_URL: //TBD
-    //   // },
-    //   commands: [
-    //     "curl -Ssf $ENDPOINT_URL",
-    //     "curl -Ssf $ENDPOINT_URL/hello",
-    //     "curl -Ssf $ENDPOINT_URL/test",
-    //   ],
-    // });
-    // )
-
-    
+    /***********************************************************************
+     *    Add test stage
+     ***********************************************************************/
     const testStage = pipeline.addStage(
       new PipelineStage(this, "PipelineTestStage", {
-        stageName: "test"
+        stageName: "test",
       })
     );
 
-    testStage.addPre(new CodeBuildStep("unit test", {
-      commands:[
-        'npm ci',
-        'npm run test'
-      ]
-    }))
+    const prodStage = pipeline.addStage(
+      new PipelineStage(this, "PipelineProdStage", {
+        stageName: "prod",
+      })
+    );
+
+    /***********************************************************************
+     *    Authomate unit test within the stage
+     ***********************************************************************/
+    testStage.addPre(
+      new CodeBuildStep("unit test", {
+        commands: ["npm ci", "npm run test"],
+      })
+    );
   }
 }
