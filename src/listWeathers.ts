@@ -1,11 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import * as AWS from "aws-sdk";
 
-// const region = process.env.Region;
+const region = process.env.Region;
 const docClient = new AWS.DynamoDB.DocumentClient();
-const tableName = "weatherApiTable";
+const tableName = process.env.TABLE_NAME as string;
 
-export const lambdaHandler = async (): Promise<APIGatewayProxyResult> => {
+export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   let response: APIGatewayProxyResult;
   try {
     const res = await docClient.scan({ TableName: tableName }).promise();
