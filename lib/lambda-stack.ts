@@ -58,7 +58,7 @@ export class LambdaStack extends Stack {
     // Defining a lambda resource to read data from dynamodb table
     const getWeatherLambda: lambda.Function = new lambda.Function(
       this,
-      "getWeatherLambda",
+      "getWeatherLambdaFunction",
       {
         functionName: "cdk-typescript-get",
         runtime: lambda.Runtime.NODEJS_14_X,
