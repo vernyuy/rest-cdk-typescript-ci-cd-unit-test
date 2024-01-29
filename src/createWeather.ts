@@ -11,7 +11,7 @@ export const lambdaHandler = async (
   event: any
 ): Promise<APIGatewayProxyResult> => {
   let response: APIGatewayProxyResult;
-  var id = Math.floor(Math.random() * 1000).toString();
+  const id = Math.floor(Math.random() * 1000).toString();
   const body = JSON.parse(event.body);
   const weatherItem = {
     id: id,

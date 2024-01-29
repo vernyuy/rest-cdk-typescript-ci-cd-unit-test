@@ -13,7 +13,7 @@ export const lambdaHandler = async (
   const body = JSON.parse(event.body);
   const weather = body.weather;
   const town = body.town as string;
-  var params = {
+  const params = {
     Key: {
       id: weather_id as string,
     },
