@@ -12,7 +12,7 @@ export const lambdaHandler = async  (
   let response: APIGatewayProxyResult;
   const weatherId = event.pathParameters.id as string;
   try {
-    const res = await client
+    await client
       .delete({
         TableName: tableName,
         Key: {

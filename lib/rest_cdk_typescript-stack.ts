@@ -6,7 +6,7 @@ import {
   ShellStep,
   CodePipelineSource,
   CodeBuildStep,
-  ManualApprovalStep
+  ManualApprovalStep,
 } from "aws-cdk-lib/pipelines";
 
 export class RestCdkTypescriptStack extends cdk.Stack {
@@ -26,9 +26,9 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       }),
     });
 
-    /***********************************************************************
+    /*********************************
      *    Add test stage
-     ***********************************************************************/
+     *********************************/
     const devStage = pipeline.addStage(
       new PipelineStage(this, "PipelineDevStage", {
         stageName: "dev",
@@ -41,15 +41,17 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       })
     );
 
-    /***********************************************************************
+    /*****************************************************
      *    Authomate unit test within the stage
-     ***********************************************************************/
+     *****************************************************/
     devStage.addPre(
       new CodeBuildStep("unit test", {
         commands: ["npm ci", "npm run test"],
       })
     );
 
-    devStage.addPost(new ManualApprovalStep('Manual aproval before production'))
+    devStage.addPost(
+      new ManualApprovalStep("Manual aproval before production")
+    );
   }
 }

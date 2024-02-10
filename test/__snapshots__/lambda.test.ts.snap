@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create weather 1`] = `
+{
+  "body": "{"message":"Missing required key 'TableName' in params"}",
+  "statusCode": 500,
+}
+`;

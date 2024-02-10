@@ -5,7 +5,7 @@ const region = process.env.Region;
 const docClient = new AWS.DynamoDB.DocumentClient();
 const tableName = process.env.TABLE_NAME as string;
 
-export const lambdaHandler = async (event: any): Promise<APIGatewayProxyResult> => {
+export const lambdaHandler = async (): Promise<APIGatewayProxyResult> => {
   let response: APIGatewayProxyResult;
   try {
     const res = await docClient.scan({ TableName: tableName }).promise();

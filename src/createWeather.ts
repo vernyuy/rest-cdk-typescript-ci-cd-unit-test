@@ -19,14 +19,13 @@ export const lambdaHandler = async (
     town: body.town as string,
   };
   try {
-    const test = await docClient
+    await docClient
       .put({
         TableName: tableName,
         ReturnConsumedCapacity: "TOTAL",
         Item: weatherItem,
       })
       .promise();
-      console.log(test);
       response = {
         statusCode: 200,
         body: JSON.stringify({

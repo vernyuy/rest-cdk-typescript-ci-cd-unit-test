@@ -12,7 +12,10 @@ interface LambdaStackProps extends StackProps {
 export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
-    
+
+    /**********************************
+     * Define Dynamodb table resource
+     **********************************/
     const table: dynamodb.Table = new dynamodb.Table(
       this,
       `${props.stageName}CdkTypescriptWeatherTable`,
@@ -24,7 +27,9 @@ export class LambdaStack extends Stack {
     );
     cdk.Tags.of(table).add("RestCdkTypescript", "Test");
 
-    // Api gateway resource
+    /*******************************
+     * Define API Gateway Resource
+     *******************************/
     const weatherApi: apigw.RestApi = new apigw.RestApi(
       this,
       `weather_rest_api`,
@@ -34,8 +39,9 @@ export class LambdaStack extends Stack {
       } as apigw.RestApiProps
     );
 
-
-    // Lambda resource to create weather item in dynamodb
+    /*********************************************************
+     * Define lambda function to perform the CREATE Operation
+     *********************************************************/
     const createWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "CreateWeatherLambdaFunction",
@@ -50,10 +56,15 @@ export class LambdaStack extends Stack {
         },
       }
     );
-    // Grant createWeatherLambda the permission to write to dynamodb table
-    table.grantReadWriteData(createWeatherLambda);
 
-    // Defining a lambda resource to read data from dynamodb table
+    /*******************************************************************
+     * Give the lambda function permisions to write to the defined table.
+     ********************************************************************/
+    table.grantWriteData(createWeatherLambda);
+
+    /*********************************************************
+     * Define lambda function to perform the READ Operation
+     *********************************************************/
     const getWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "getWeatherLambdaFunction",
@@ -69,10 +80,14 @@ export class LambdaStack extends Stack {
       }
     );
 
-    // Grant getWeatherLambda the permission to read data from dynamodb table
+    /*******************************************************************
+     * Give the lambda function permisions to read from the defined table.
+     ********************************************************************/
     table.grantReadData(getWeatherLambda);
 
-    // Defining a lambda resource to list all data from dynamodb table
+    /*********************************************************
+     * Define lambda function to perform the LIST Operation
+     *********************************************************/
     const listWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "listWeatherLambdaFunction",
@@ -88,10 +103,14 @@ export class LambdaStack extends Stack {
       }
     );
 
-    // Grant listWeatherLambda the permission to read data from dynamodb table
+    /*******************************************************************
+     * Give the lambda function permisions to read from the defined table.
+     ********************************************************************/
     table.grantReadData(listWeatherLambda);
 
-    // Defining a lambda resource to delete data from dynamodb table
+    /*********************************************************
+     * Define lambda function to perform the DELETE Operation
+     *********************************************************/
     const deleteWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "deleteWeatherLambdaFunction",
@@ -107,10 +126,14 @@ export class LambdaStack extends Stack {
       }
     );
 
-    // Grant deleteWeatherLambda the permission to delete data from dynamodb table
+    /**************************************************************************
+     * Give the lambda function permisions to read/write from the defined table.
+     **************************************************************************/
     table.grantReadWriteData(deleteWeatherLambda);
 
-    // Defining a lambda resource to update data in dynamodb table
+    /*********************************************************
+     * Define lambda function to perform the UPDATE Operation
+     *********************************************************/
     const updateWeatherLambda: lambda.Function = new lambda.Function(
       this,
       "updateWeatherLambdaFunction",
@@ -126,27 +149,31 @@ export class LambdaStack extends Stack {
       }
     );
 
-    // Grant updateWeatherLambda the permission to update data in dynamodb table
+    /**************************************************************************
+     * Give the lambda function permisions to read/write from the defined table.
+     **************************************************************************/
     table.grantReadWriteData(updateWeatherLambda);
 
-    // Defining an api route to create a weather item
+    /**************************************************************************
+     * Define endpoint routes and http methods
+     **************************************************************************/
     weatherApi.root
       .addResource("create-weather")
       .addMethod("POST", new apigw.LambdaIntegration(createWeatherLambda));
 
-    // Defining an api route to read a weather item
     const weathers: apigw.Resource = weatherApi.root.addResource("weather");
+
     const weather: apigw.Resource = weathers.addResource("{id}");
-    // Defining an api route to list all weather items
+
     weathers.addMethod("GET", new apigw.LambdaIntegration(listWeatherLambda));
+
     weather.addMethod("GET", new apigw.LambdaIntegration(getWeatherLambda));
-    // Defining an api route to delete a weather items
+
     weather.addMethod(
       "DELETE",
       new apigw.LambdaIntegration(deleteWeatherLambda)
     );
 
-    // Defining an api route to update a weather item
     weather.addMethod("PUT", new apigw.LambdaIntegration(updateWeatherLambda));
   }
 }
