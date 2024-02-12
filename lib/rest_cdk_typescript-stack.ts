@@ -16,7 +16,7 @@ export class RestCdkTypescriptStack extends cdk.Stack {
     /***********************************************************************
      *    Create codepipeline for the project using github as code source.
      ***********************************************************************/
-    const pipeline = new CodePipeline(this, "Pipeline", {
+    new CodePipeline(this, "Pipeline", {
       synth: new ShellStep("synth", {
         input: CodePipelineSource.gitHub(
           "vernyuy/rest-cdk-typescript-ci-cd-unit-test",
@@ -26,32 +26,32 @@ export class RestCdkTypescriptStack extends cdk.Stack {
       }),
     });
 
-    /*********************************
-     *    Add test stage
-     *********************************/
-    const devStage = pipeline.addStage(
-      new PipelineStage(this, "PipelineDevStage", {
-        stageName: "dev",
-      })
-    );
+    // /*********************************
+    //  *    Add test stage
+    //  *********************************/
+    // const devStage = pipeline.addStage(
+    //   new PipelineStage(this, "PipelineDevStage", {
+    //     stageName: "dev",
+    //   })
+    // );
 
-    const prodStage = pipeline.addStage(
-      new PipelineStage(this, "PipelineProdStage", {
-        stageName: "prod",
-      })
-    );
+    // const prodStage = pipeline.addStage(
+    //   new PipelineStage(this, "PipelineProdStage", {
+    //     stageName: "prod",
+    //   })
+    // );
 
-    /*****************************************************
-     *    Authomate unit test within the stage
-     *****************************************************/
-    devStage.addPre(
-      new CodeBuildStep("unit test", {
-        commands: ["npm ci", "npm run test"],
-      })
-    );
+    // /*****************************************************
+    //  *    Authomate unit test within the stage
+    //  *****************************************************/
+    // devStage.addPre(
+    //   new CodeBuildStep("unit test", {
+    //     commands: ["npm ci", "npm run test"],
+    //   })
+    // );
 
-    devStage.addPost(
-      new ManualApprovalStep("Manual aproval before production")
-    );
+    // devStage.addPost(
+    //   new ManualApprovalStep("Manual aproval before production")
+    // );
   }
 }
